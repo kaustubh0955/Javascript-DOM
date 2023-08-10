@@ -86,7 +86,7 @@ console.log(arr.slice());
 //Splice
 
 //console.log(arr.splice(2));
-arr.splice(-1);
+arr.splice(-1)
 console.log(arr);
 arr.splice(1, 2);
 console.log(arr);

@@ -1,7 +1,7 @@
 'use strict';
-/*
 //Constructor Function
 //Arrow function will not as constructor functions
+/*
 const Person = function (firstName, birthYear) {
   //Instance Properties
   this.firstName = firstName;
@@ -166,4 +166,207 @@ const account = {
 account.latest = 50;
 console.log(account.movements);
 
+//Object.create
+
+const PersonProto = {
+  calcAge() {
+    console.log(2023 - this.birthYear);
+  },
+
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+const kaus = Object.create(PersonProto);
+console.log(kaus);
+kaus.name = 'Kaustubh';
+kaus.birthYear = 2002;
+kaus.calcAge();
+
+console.log(kaus.__proto__ === PersonProto);
+const hesha = Object.create(PersonProto);
+hesha.init('Hesha', 2004);
+hesha.calcAge();
+
+//Inheritance between classes: Constructor functions
+const Person = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+Person.prototype.calcAge = function () {
+  console.log(2023 - this.birthYear);
+};
+const Student = function (firstName, birthYear, course) {
+  Person.call(this, firstName, birthYear);
+  this.course = course;
+};
+//Linking prototype
+Student.prototype = Object.create(Person.prototype);
+
+Student.prototype.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+};
+
+const hesha = new Student('Hesha', 2021, 'Computer Science');
+hesha.introduce();
+hesha.calcAge();
+
+console.log(hesha.__proto__);
+console.log(hesha.__proto__.__proto__);
+
+console.log(hesha instanceof Student);
+console.log(hesha instanceof Person);
+console.log(hesha instanceof Object);
+
+console.dir(Student.prototype.constructor);
+//Inheritance between classes
+class PersonCl {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+
+  calcAge() {
+    console.log(2023 - this.birthYear);
+  }
+
+  greet() {
+    console.log(`Hey ${this.fullName}`);
+  }
+
+  get age() {
+    return 2023 - this.birthYear;
+  }
+
+  set fullName(name) {
+    if (name.includes(' ')) this._fullName = name;
+    else alert(`${name} is not a full name`);
+  }
+
+  get fullName() {
+    return this._fullName;
+  }
+
+  calcAge() {
+    console.log(
+      `I'm ${
+        2023 - this.birthYear
+      } years old,but as a student i feel more like ${
+        2023 - this.birthYear + 10
+      }`
+    );
+  }
+}
+
+class StudentCl extends PersonCl {
+  constructor(fullName, birthYear, course) {
+    //Always need to happen first
+    super(fullName, birthYear);
+    this.course = course;
+  }
+
+  introduce() {
+    console.log(`My name is ${this.fullName} and I study ${this.course}`);
+  }
+}
+
+const martha = new StudentCl('Martha Jones', 2012, 'Computer Science');
+martha.introduce();
+martha.calcAge();
+
+//Inheritance between classes: Object.create
+const PersonProto = {
+  calcAge() {
+    console.log(2023 - this.birthYear);
+  },
+
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+const kaus = Object.create(PersonProto);
+const StudentProto = Object.create(PersonProto);
+StudentProto.init = function (firstName, birthYear, course) {
+  PersonProto.init.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+StudentProto.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+};
+
+const akinchay = Object.create(StudentProto);
+akinchay.init('Kaustubh', 2012, 'Computer Science');
+akinchay.introduce();
+akinchay.calcAge();
+
 */
+//Another Class Example
+
+//Public fields
+//Private fields
+//Public methods
+//Private methods
+
+class Account {
+  // 1)Public fields(instances)
+  locale = navigator.language;
+  // 2) Private Fields(instances)
+  #movements = [];
+  #pin;
+
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    //protected
+    this.#pin = pin;
+    //this._movements = [];
+    this.locale = navigator.language;
+
+    console.log(`Thanks for opening an account,${owner}`);
+  }
+
+  //Public Interface
+  //Public methods
+  getMovements() {
+    return this.#movements;
+  }
+
+  deposit(val) {
+    this.#movements.push(val);
+  }
+  withdraw(val) {
+    this.deposit(-val);
+  }
+
+  requestLoan(val) {
+    if (this._approveLoan(val)) {
+      this.deposit(val);
+      console.log(`Loan approved`);
+    }
+  }
+  //Private Methods
+  _approveLoan(val) {
+    return true;
+  }
+}
+
+const acc1 = new Account('Kaustubh', 'Rupees', 1111);
+console.log(acc1);
+
+//acc1._movements.push(250);
+//acc1._movements.push(-140);
+acc1.deposit(250);
+acc1.withdraw(140);
+acc1.requestLoan(1000);
+//acc1.#approveLoan(1000);
+console.log(acc1.getMovements());
+console.log(acc1);
+console.log(acc1.pin);
+
+//console.log(acc1.#movements);
+//console.log(acc1.#pin);
+//Encapsulation:Protected Properties and Methods
+//Encapsulation: Private class fields and methods
